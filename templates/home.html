@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <h1>Add sensor</h1>
+    <form method="POST" action="/">
+      <input type="number" name="id">
+      <input type="text" name="alias">
+      <input type="text" name="name">
+      <input type="text" name="type_name">
+      <input type="submit" value="Add">
+    </form>
+
+    <h1>Sensors</h1>
+    <table>
+      {% for sensor in sensors %}
+        <tr>
+          <td>
+            {{sensor.alias}}
+          </td>
+          <td>
+            <form method="POST" action="./update" style="display: inline">
+              <input type="number" value="{{sensor.id}}" name="id">
+              <input type="text" value="{{sensor.alias}}" name="alias">
+              <input type="text" value="{{sensor.name}}" name="name">
+              <input type="text" value="{{sensor.type_name}}" name="type_name">
+              <input type="submit" value="Update">
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="./delete" style="display: inline">
+              <input type="hidden" value="{{sensor.alias}}" name="alias">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>
