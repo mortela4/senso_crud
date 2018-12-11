@@ -32,13 +32,13 @@ class Sensor(db.Model):
     alias = db.Column(db.String(50), unique=True)
     type_name = db.Column(db.String(5), unique=False)
 
-    def __init__(self, name=None, alias=None, type_name=None):
+    def __init__(self, alias=None, name=None, type_name=None):
         self.name = name
         self.type_name = type_name
         self.alias = alias
         self.id = uuid.uuid4()
         # Debug:
-        print("Created sensor: id=%s, alias=%s, type=%s, device=%s" % (self.id, self.alias, self.type_name, self.type_name))
+        print("Created sensor: id=%s, alias=%s, type=%s, device=%s" % (self.id, self.alias, self.type_name, self.name))
 
     def __repr__(self):
         return '<ID %r><Name %r><Alias %r><Type %r>' % (self.id, self.name, self.alias, self.type_name)
@@ -49,7 +49,7 @@ def home():
     sensors = None
     if request.form:
         try:
-            sensor = Sensor(title=request.form.get("alias"))
+            sensor = Sensor(alias=request.form.get("alias"), name=request.form.get("name"), type_name=request.form.get("type_name"))
             db.session.add(sensor)
             db.session.commit()
         except Exception as e:
