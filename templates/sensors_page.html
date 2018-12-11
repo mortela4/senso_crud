@@ -1,0 +1,50 @@
+<html>
+  <body>
+    <h1>Add sensor</h1>
+    <form method="POST" action="/">
+      <label>Alias:</label>
+      <input type="text" name="alias">
+      <label>Device:</label>
+      <select type="text" name="name">
+        <option value="sht711">SHT711</option>
+        <option value="tmp82">TMP82</option>
+        <option value="bma280">BMA280</option>
+        <option value="custom-1">Custom-1</option>
+      </select>
+      <label>Interface:</label>
+      <select type="text" name="type_name">
+        <option value="spi">SPI</option>
+        <option value="i2c">I2C</option>
+        <option value="uart">UART</option>
+      </select>
+      <input type="submit" value="Add">
+    </form>
+
+    <h1>Sensors</h1>
+    <table>
+      {% for sensor in sensors %}
+        <tr>
+          <td>
+            Sensor ID: 
+            {{sensor.id}}
+          </td>
+          <td>
+            <form method="POST" action="./update" style="display: inline">
+              <output type="text" value="{{sensor.id}}" name="id">
+              <input type="text" value="{{sensor.alias}}" name="alias">
+              <input type="text" value="{{sensor.name}}" name="name">
+              <input type="text" value="{{sensor.type_name}}" name="type_name">
+              <input type="submit" value="Update">
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="./delete" style="display: inline">
+              <input type="hidden" value="{{sensor.alias}}" name="alias">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+  </body>
+</html>

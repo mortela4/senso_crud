@@ -16,18 +16,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 
 db = SQLAlchemy(app)
 
-"""
-class Book(db.Model):
-    title = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-
-    def __repr__(self):
-        return "<Alias: {}>".format(self.title)
-"""
-
 
 class Sensor(db.Model):
     __tablename__ = 'sensors'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(50), unique=False)
     alias = db.Column(db.String(50), unique=True)
     type_name = db.Column(db.String(5), unique=False)
@@ -36,7 +28,8 @@ class Sensor(db.Model):
         self.name = name
         self.type_name = type_name
         self.alias = alias
-        self.id = uuid.uuid4()
+        uuid_val = uuid.uuid4()
+        self.id = str(uuid_val.hex)     # Store UUIDs as plain (hex-)string --> get (BIG)INT-value as 'int(self.id, 16)'
         # Debug:
         print("Created sensor: id=%s, alias=%s, type=%s, device=%s" % (self.id, self.alias, self.type_name, self.name))
 
@@ -56,7 +49,7 @@ def home():
             print("Failed to add sensor!")
             print(e)
     sensors = Sensor.query.all()
-    return render_template("home.html", sensors=sensors)
+    return render_template("sensors_page.html", sensors=sensors)    # Change to other HTML input page if needed ...
 
 
 @app.route("/update", methods=["POST"])
@@ -83,4 +76,4 @@ def delete():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
