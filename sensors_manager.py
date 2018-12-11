@@ -37,6 +37,8 @@ class Sensor(db.Model):
         self.type_name = type_name
         self.alias = alias
         self.id = uuid.uuid4()
+        # Debug:
+        print("Created sensor: id=%s, alias=%s, type=%s, device=%s" % (self.id, self.alias, self.type_name, self.type_name))
 
     def __repr__(self):
         return '<ID %r><Name %r><Alias %r><Type %r>' % (self.id, self.name, self.alias, self.type_name)
@@ -62,8 +64,8 @@ def update():
     try:
         newalias = request.form.get("newalias")
         oldalias = request.form.get("oldalias")
-        book = Sensor.query.filter_by(alias=oldalias).first()
-        book.title = newalias
+        sensor = Sensor.query.filter_by(alias=oldalias).first()
+        sensor.alias = newalias
         db.session.commit()
     except Exception as e:
         print("Couldn't update sensor!")
